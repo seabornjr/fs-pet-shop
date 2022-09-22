@@ -47,8 +47,8 @@ if (command == 'read' && typeof index == 'string') {
          let arr = JSON.parse(data)
          let obj = {'age': parseInt(index), 'kind': kind, 'name': name};
          arr.push(obj)
-         let newData = JSON.stringify(arr);
-         fs.writeFile('pets.json',newData, error => { if(error) {
+         var petsJSON = JSON.stringify(arr);
+         fs.writeFile('pets.json',petsJSON, error => { if(error) {
             console.log('Usage: create AGE KIND NAME')
         }})
     })
