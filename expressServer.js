@@ -1,14 +1,17 @@
 'use strict';
+
+
 //initalize the express package
 //set up dependencies
 const { response } = require('express');
-const { application } = require('express');
+
 const express = require('express');
 const app = express();
-application.use(express.json())
+app.use(express.json())
 
 //require the path directory
 var fs = require('fs');
+const { request } = require('http');
 var path = require('path');
 var petsPath = path.join(__dirname, 'pets.json');
 
@@ -33,42 +36,47 @@ app.get('/pets', (req, res) => {
       });
 });
 
-app.get('/pets/0', (req, res) => {
-    //logic 
+app.get('/pets/:id', (req, res) => {
+    console.log("here's a way", req.params, req.query)
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
-        if (err) {
-            if (err) {
-                console.log(err);
-                response.status(500).
-                response.send(err);
-            }
-        } else { 
         var pets = JSON.parse(petsJSON);
-        var petsData = JSON.stringify(pets[0]);
-        res.status(200);
-        res.send(petsData);
+        if (err) {
+                console.log(err);
+                res.status(500)
+                res.send(err);
+        }     
+        else if (!pets[req.params.id]){
+                res.status(404)
+                res.send(err);
         }
-      });
+        else {
+            var petsData = JSON.stringify(pets[req.params.id]);
+            res.status(200);
+            res.send(petsData);
+        }
+    });
 });
 
-app.get('/pets/1', (req, res) => {
-    //logic 
+app.post('/pets', (req, res) => {
+    console.log("here's a way", req.body)
     fs.readFile(petsPath, 'utf8', function(err, petsJSON) {
-        if (err) {
-            if (err) {
-                console.log(err);
-                response.status(500).
-                response.send(err);
-            }
-        } else { 
         var pets = JSON.parse(petsJSON);
-        var petsData = JSON.stringify(pets[1]);
-        res.status(200);
-        res.send(petsData);
+        if (err) {
+                console.log(err);
+                res.status(500)
+                res.send(err);
+        }     
+        else if (!pets[req.params.id]){
+                res.status(404)
+                res.send(err);
         }
-      });
+        else {
+            pets.push(req.body);
+            res.status(200);
+            res.send(pets);
+        }
+    });
 });
-
 //listen for calls to the server
 app.listen(port, () => {
     console.log(`Listening for response on port ${port}`)
