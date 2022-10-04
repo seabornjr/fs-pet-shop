@@ -12,6 +12,9 @@
 // console.log(read(0))
 
 const fs = require('fs');
+var http = require('http');
+var port = process.env.PORT || 8000;
+
 
 
 let command = process.argv[2];
@@ -19,6 +22,7 @@ let index = process.argv[3];
 let kind = process.argv[4];
 let name = process.argv[5];
 //console.log(process.argv);
+var server = http.createServer(function(req, res) {
 if (command == 'read' && typeof index == 'string') {
     fs.readFile("./pets.json", 'utf8', function (error, data) {
         
@@ -57,5 +61,9 @@ if (command == 'read' && typeof index == 'string') {
     console.log('Usage: node pets.js [read | create | update | destroy]')
     process.exit(1);
 }
-   
+  
+
+
+
+});
 

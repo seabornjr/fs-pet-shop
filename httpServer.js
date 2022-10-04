@@ -67,6 +67,22 @@ var server = http.createServer(function(req, res) {
   }
 });
 
+//write meow to a new file calls dogs.txt
+//write meow to a new file calls dogs.txt
+fs.readFile('dogs.txt', 'utf-8', function(error, data){
+  if(error) {
+      console.log(error)
+  } else { 
+    fs.writeFile('dogs.txt', 'also woof', function(error, data){
+      if(error) {
+          console.log(error)
+      } else {
+         return data + 'also woof!'
+      }
+    })
+  }
+})
+
 server.listen(port, function() {
   console.log('Listening on port', port);
 });
